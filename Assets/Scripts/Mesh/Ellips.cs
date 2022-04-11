@@ -113,14 +113,14 @@ public class Ellips : MonoBehaviour
     {
         return b * Mathf.Sin(t * Mathf.Deg2Rad);
     }
-    /*private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         if (_vertex == null)
             return;
         Gizmos.color = Color.red;
-        for (int i = 0; i < _vertex.Count; i++) 
+        for (int i = 0; i < _vertex.Count; i++)
         {
             Gizmos.DrawSphere(_vertex[i], 0.1f);
         }
-    }*/
+    }
 }

@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEditor;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
-[RequireComponent(typeof(WheelCollider))]
+//[RequireComponent(typeof(WheelCollider))]
 public class Washer : MonoBehaviour
 {
     [SerializeField] private float _funHeight = 0.1f;
-    [SerializeField] private int _numbDivisions = 10; //количество разделений
+    [SerializeField] private int _numbDivisions = 20; //количество разделений
     [SerializeField] private float _aLittle = 0f;
     [SerializeField] private float _bLittle = 0f;
     [SerializeField] private float _aBig = 0f;
     [SerializeField] private float _bBig = 0f;
+    private Coroutine _coroutine;
+    private int _i = -5;
+    private bool _flag = true;
+    private bool _end = false;
 
     private List<Vector3> _vertex = new List<Vector3>();
     private float _summAngle = 0f;
@@ -27,7 +31,7 @@ public class Washer : MonoBehaviour
     private void Start()
     {
         Generate();
-        gameObject.GetComponent<WheelCollider>().radius = _aBig;
+        //gameObject.GetComponent<WheelCollider>().radius = _aBig;
         /*Debug.Log(gameObject.transform.position);
         Debug.Log(gameObject.GetComponent<WheelCollider>().center);
         gameObject.GetComponent<WheelCollider>().center = gameObject.transform.position;
@@ -37,6 +41,20 @@ public class Washer : MonoBehaviour
     }
     private void Update()
     {
+        if (_i >= _vertex.Count && _flag && !_end)
+        {
+            //StopCoroutine(_coroutine);
+            _flag = false;
+            _i = 0;
+            Debug.Log("!");
+            Triangle();
+        }
+        else if (_i >= _triangl.Count && !_flag && !_end)
+        {
+            _i = 0;
+            Debug.Log("!)");
+            end();
+        }
         //gameObject.GetComponent<WheelCollider>().center = gameObject.transform.position;
         //Debug.LogError(gameObject.GetComponent<WheelCollider>().center);
     }
@@ -90,10 +108,15 @@ public class Washer : MonoBehaviour
             _vertex.Add(new Vector3(0f, yt(_aLittle, _summAngle), zt(_bLittle, _summAngle)));
         }
         _vertices = new Vector3[_vertex.Count];
-        for (int i = 0; i < _vertex.Count; i++)
-        {
-            _vertices[i] = _vertex[i];
-        }
+        //for (int i = 0; i < _vertex.Count; i++)
+        //{
+        //    _vertices[i] = _vertex[i];
+        //}
+        _i = 0;
+        _coroutine = StartCoroutine(Vert());
+    }
+    private void Triangle()
+    {
         _mesh.vertices = _vertices;
         //нижнее основание сторона
         for (int i = 0; i < _numbDivisions - 1; i++)
@@ -128,7 +151,7 @@ public class Washer : MonoBehaviour
         _triangl.Add(_numbDivisions * 4 - 1);
         _triangl.Add(_numbDivisions * 3);
         //внешняя боковая сторона
-        for (int i = _numbDivisions * 4 ; i < _numbDivisions * 5 - 1; i++)
+        for (int i = _numbDivisions * 4; i < _numbDivisions * 5 - 1; i++)
         {
             _triangl.Add(i);
             _triangl.Add(i + _numbDivisions);
@@ -161,16 +184,12 @@ public class Washer : MonoBehaviour
         _triangl.Add(_numbDivisions * 8 - 1);
 
         _triangles = new int[_triangl.Count];
-        for (int i = 0; i < _triangl.Count; i++)
-        {
-            _triangles[i] = _triangl[i];
-        }
-        _mesh.triangles = _triangles;
-        _mesh.RecalculateNormals();
-        //для сохранения
-        //_washer.GetComponent<MeshCollider>().sharedMesh = _mesh;
-        //AssetDatabase.CreateAsset(_mesh, "Assets/Meshs/Washer.asset");
-        //_washer.transform.position = new Vector3(110f, 110f, 110f);
+        _coroutine = StartCoroutine(Triangl());
+        //for (int i = 0; i < _triangl.Count; i++)
+        //{
+        //    _triangles[i] = _triangl[i];
+        //}
+
     }
 
     private float y_t(float a, float t)
@@ -185,14 +204,52 @@ public class Washer : MonoBehaviour
     {
         Generate();
     }*/
-    /*private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        if (_vertex == null)
+        if (_vertices == null)
             return;
         Gizmos.color = Color.red;
-        for (int i = 0; i < _vertex.Count; i++) 
+        for (int i = 0; i < _vertices.Length; i++) 
         {
-            Gizmos.DrawSphere(_vertex[i], 0.1f);
+            Gizmos.DrawSphere(_vertices[i], 0.1f);
         }
-    }*/
+    }
+    IEnumerator Vert()
+    {
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        for (int i = 0; i < _vertex.Count; i++)
+        {
+            _vertices[_i] = _vertex[_i];
+            _i++;
+            yield return new WaitForSeconds(0.025f);//0.05f
+        }
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+    }
+    IEnumerator Triangl()
+    {
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        for (int i = 0; i < _triangl.Count; i++)
+        {
+            _triangles[_i] = _triangl[_i];
+            _i++;
+            if (_i % 3 == 0)
+            {
+                _mesh.triangles = _triangles;
+                gameObject.GetComponent<MeshFilter>().mesh = _mesh;
+            }
+            yield return new WaitForSeconds(0.02f);
+        }
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+    }
+    private void end()
+    {
+        _mesh.triangles = _triangles;
+        _mesh.RecalculateNormals();
+        gameObject.GetComponent<MeshFilter>().mesh = _mesh;
+        //для сохранения
+        //_washer.GetComponent<MeshCollider>().sharedMesh = _mesh;
+        //AssetDatabase.CreateAsset(_mesh, "Assets/Meshs/Washer.asset");
+        //_washer.transform.position = new Vector3(110f, 110f, 110f);
+        _end = true;
+    }
 }
