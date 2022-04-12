@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: fe4e130f9947345a2b213cb5038851a2, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.61116576, g: 0.5547332, b: 0.6512323, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -362,8 +362,8 @@ Light:
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NormalBias: 2.8
+    m_NearPlane: 7.2
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -382,9 +382,9 @@ Light:
       e32: 0
       e33: 1
     m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
+  m_Cookie: {fileID: 2800000, guid: c9658c52dbf374bf6aeeb26310f71145, type: 3}
   m_DrawHalo: 0
-  m_Flare: {fileID: 0}
+  m_Flare: {fileID: 12100000, guid: abbc1e6231a944490a02e2ad613ec906, type: 2}
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
@@ -742,7 +742,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.23474543, g: 0.4516316, b: 0.7924528, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

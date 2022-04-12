@@ -194,7 +194,7 @@ public class SelectObjects : MonoBehaviour
             {
                 NewObject.transform.position = PositionNewObjects(_hit.transform.position, i, _radiusSelectObject);
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
         //for (int i = 0; i < (int)RelativePositionDisk._yBot; i++)
         //{

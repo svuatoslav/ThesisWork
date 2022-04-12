@@ -46,15 +46,14 @@ public class Washer : MonoBehaviour
             //StopCoroutine(_coroutine);
             _flag = false;
             _i = 0;
-            Debug.Log("!");
             Triangle();
         }
         else if (_i >= _triangl.Count && !_flag && !_end)
         {
             _i = 0;
-            Debug.Log("!)");
             end();
         }
+
         //gameObject.GetComponent<WheelCollider>().center = gameObject.transform.position;
         //Debug.LogError(gameObject.GetComponent<WheelCollider>().center);
     }
@@ -216,18 +215,18 @@ public class Washer : MonoBehaviour
     }
     IEnumerator Vert()
     {
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Started Coroutine at timestamp : " + Time.time);
         for (int i = 0; i < _vertex.Count; i++)
         {
             _vertices[_i] = _vertex[_i];
             _i++;
-            yield return new WaitForSeconds(0.025f);//0.05f
+            yield return new WaitForSeconds(0.001f);
         }
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Finished Coroutine at timestamp : " + Time.time);
     }
     IEnumerator Triangl()
     {
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Started Coroutine at timestamp : " + Time.time);
         for (int i = 0; i < _triangl.Count; i++)
         {
             _triangles[_i] = _triangl[_i];
@@ -237,9 +236,9 @@ public class Washer : MonoBehaviour
                 _mesh.triangles = _triangles;
                 gameObject.GetComponent<MeshFilter>().mesh = _mesh;
             }
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.00001f);
         }
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Finished Coroutine at timestamp : " + Time.time);
     }
     private void end()
     {
