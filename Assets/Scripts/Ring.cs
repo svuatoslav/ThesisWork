@@ -15,7 +15,7 @@ public class Ring : MonoBehaviour
                 _radius = value;
         }
     }
-    private float _radius;
+    [SerializeField] private float _radius;
     //private float _F = 0f;
     private float _speedOnRim;
     public float SpeedOnRim
@@ -26,59 +26,65 @@ public class Ring : MonoBehaviour
             if (_speedOnRim != value)
             {
                 _speedOnRim = value;
-                AngelSpeed = _speedOnRim / _radius;
-                for (int i = 0; i < RelatedObjects.Length; i++)
-                {
-                    if (RelatedObjects[i] != null)
-                    {
-                        if (i < 4)
-                        {
-                            if (RelatedObjects[i].tag == "Washer")
-                                RelatedObjects[i].parent.GetComponent<WasherScr>().SpeedOnRim = -_speedOnRim;
-                            else if (RelatedObjects[i].tag == "RingWithBottom")
-                                RelatedObjects[i].parent.GetComponent<Ring>().SpeedOnRim = -_speedOnRim;
-                            else if (RelatedObjects[i].tag == "Disk")
-                                RelatedObjects[i].GetComponent<WasherScr>().SpeedOnRim = -_speedOnRim;
-                            else
-                                RelatedObjects[i].GetComponent<Ring>().SpeedOnRim = -_speedOnRim;
-                        }
-                        else
-                        {
-                            if (RelatedObjects[i].tag == "Washer")
-                                RelatedObjects[i].parent.GetComponent<WasherScr>().AngelSpeed = this.AngelSpeed;
-                            else if (RelatedObjects[i].tag == "RingWithBottom")
-                                RelatedObjects[i].parent.GetComponent<Ring>().AngelSpeed = this.AngelSpeed;
-                            else if (RelatedObjects[i].tag == "Disk")
-                                RelatedObjects[i].GetComponent<WasherScr>().AngelSpeed = this.AngelSpeed;
-                            else
-                                RelatedObjects[i].GetComponent<Ring>().AngelSpeed = this.AngelSpeed;
-                        }
-
-                    }
-                }
+                _angelSpeed = _speedOnRim / _radius;
+                Debug.LogWarning(gameObject.name);
+                SetMovementScheme();
             }
         }
     }
-    public float AngelSpeed { get; set; }
-
-    //private float _height;
+    private float _angelSpeed;
+    public float AngelSpeed
+    { 
+        get => _angelSpeed;
+        set
+        {
+            if (_angelSpeed != value)
+            {
+                _angelSpeed = value;
+                _speedOnRim = _angelSpeed * _radius;
+                Debug.LogWarning(gameObject.name);
+                SetMovementScheme();
+            }
+        }
+    }
+    private void SetMovementScheme()
+    {
+        for (int i = 0; i < RelatedObjects.Length; i++)
+        {
+            if (RelatedObjects[i] != null)
+            {
+                if (i < 4)//magic
+                {
+                    if (RelatedObjects[i].CompareTag("Disk"))
+                        RelatedObjects[i].GetComponent<Disk>().SpeedOnRim = -_speedOnRim;
+                    else if (RelatedObjects[i].CompareTag("Ring"))
+                        RelatedObjects[i].GetComponent<Ring>().SpeedOnRim = -_speedOnRim;
+                }
+                else if (4 <= i && i < RelatedObjects.Length)
+                {
+                    if (RelatedObjects[i].CompareTag("Disk"))
+                        RelatedObjects[i].GetComponent<Disk>().SpeedOnRim = _speedOnRim;
+                    else if (RelatedObjects[i].CompareTag("Ring"))
+                        RelatedObjects[i].GetComponent<Ring>().SpeedOnRim = _speedOnRim;
+                }
+                //else
+                //{
+                //    if (RelatedObjects[i].CompareTag("Disk"))
+                //        RelatedObjects[i].GetComponent<Disk>().AngelSpeed = this.AngelSpeed;
+                //    else if (RelatedObjects[i].CompareTag("Ring"))
+                //        RelatedObjects[i].GetComponent<Ring>().AngelSpeed = this.AngelSpeed;
+                //}
+            }
+        }
+    }
     public float Height { get; } = 1.1f;
-    //public float Height
-    //{
-    //    get => _height;
-    //    set
-    //    {
-    //        if (_height == 0f)
-    //            _height = value;
-    //    }
-    //}
     private void FixedUpdate()
     {
         Rot();
     }
     private void Rot()
     {
-        transform.Rotate(Vector3.up * AngelSpeed * Time.fixedDeltaTime);
+        transform.Rotate(AngelSpeed * Time.fixedDeltaTime * Vector3.up);
     }
     private enum RelativePositionRWB//связать с SpeedOnRim
     {

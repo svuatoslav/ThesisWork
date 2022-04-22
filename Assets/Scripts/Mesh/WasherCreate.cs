@@ -5,7 +5,7 @@ using UnityEditor;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 //[RequireComponent(typeof(WheelCollider))]
-public class Washer : MonoBehaviour
+public class WasherCreate : MonoBehaviour
 {
     [SerializeField] private float _funHeight = 0.1f;
     [SerializeField] private int _numbDivisions = 20; //количество разделений

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SandboxPanellCreate : MonoBehaviour
+public class SandboxPanelCreate : MonoBehaviour
 {
     [SerializeField] private GameObject _panelGreateObject = null;
     [SerializeField] private GameObject _panelGame = null;
@@ -62,8 +62,7 @@ public class SandboxPanellCreate : MonoBehaviour
     }
     private float Check(string text) 
     {
-        float number;
-        if (float.TryParse(text, out number) == true)
+        if (float.TryParse(text,out float number) == true)
         {
             return number;
         }

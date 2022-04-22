@@ -37,9 +37,9 @@ public class Creator : MonoBehaviour
         _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
         _aBig = radius;
         _bBig = _aBig;
-        if (gameObject.tag == "Disk")
+        if (gameObject.CompareTag("Disk"))
         {
-            _parent.GetComponent<WasherScr>().Radius = radius;
+            _parent.GetComponent<Disk>().Radius = radius;
             // Сделать родителя для наследников для кольца
             _washer = new GameObject();
             _washer = GenerateWasher(_washer);
@@ -48,7 +48,7 @@ public class Creator : MonoBehaviour
             _washer.name = "Washer";
             _washer.tag = "Washer";
         }
-        else if (gameObject.tag == "Ring")
+        else if (gameObject.CompareTag("Ring"))
         {
             _parent.GetComponent<Ring>().Radius = radius;
             _ringWithBottom = new GameObject();
@@ -71,8 +71,8 @@ public class Creator : MonoBehaviour
         _mesh = new Mesh();
         _washer.AddComponent<MeshFilter>().mesh = _mesh;
         _mesh.name = "Washer";
-        _x_t xt = x_t;
-        _z_t zt = z_t;
+        _x_t xt = X_t;
+        _z_t zt = Z_t;
         // Для нижнего основания
         for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
         {
@@ -199,8 +199,8 @@ public class Creator : MonoBehaviour
         _mesh = new Mesh();
         ringWithBottom.AddComponent<MeshFilter>().mesh = _mesh;
         _mesh.name = "Ring";
-        _x_t xt = x_t;
-        _z_t zt = z_t;
+        _x_t xt = X_t;
+        _z_t zt = Z_t;
         // Для нижнего основания
         for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
         {
@@ -343,11 +343,11 @@ public class Creator : MonoBehaviour
         ringWithBottom.AddComponent<MeshCollider>().sharedMesh = _mesh;
         return ringWithBottom;
     }
-    private float x_t(float a, float t)
+    private float X_t(float a, float t)
     {
         return a * Mathf.Cos(t * Mathf.Deg2Rad);
     }
-    private float z_t(float b, float t)
+    private float Z_t(float b, float t)
     {
         return b * Mathf.Sin(t * Mathf.Deg2Rad);
     }
