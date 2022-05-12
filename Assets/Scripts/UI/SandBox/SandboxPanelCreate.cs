@@ -8,7 +8,6 @@ public class SandboxPanelCreate : MonoBehaviour
 {
     [SerializeField] private GameObject _panelGreateObject = null;
     [SerializeField] private GameObject _panelGame = null;
-    [SerializeField] private Camera _camera = null;
     [SerializeField] private GameObject _objectType = null;
     [SerializeField] private GameObject _inputRadius = null;
     [SerializeField] private GameObject _errorInput = null;
@@ -53,7 +52,7 @@ public class SandboxPanelCreate : MonoBehaviour
             _panelGreateObject.SetActive(false);
             _panelGame.SetActive(true);
             _errorInput.SetActive(false);
-            _camera.transform.position = _oldposition;
+            Camera.main.transform.position = _oldposition;
         }
         else
         {

@@ -11,6 +11,7 @@ public class SelectObjects : MonoBehaviour
     private GameObject _selectGameObject;
     private RaycastHit _hit;
     public GameObject NewObject { private get; set; } = null;
+    [SerializeField] private Camera _camera = null;
     public float RadiusNewObject { private get; set; } = 0f;
     public float AngelSpeed { private get; set; } = 0f;
     private float _radiusSelectObject = 0f;
@@ -35,6 +36,7 @@ public class SelectObjects : MonoBehaviour
             else
             {
                 _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                
                 if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
                 {
                     _selectGameObject = _hit.transform.parent.gameObject;
@@ -45,7 +47,8 @@ public class SelectObjects : MonoBehaviour
         }
         else if(Input.GetMouseButtonDown(1))
         {
-            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            _ray = _camera.ScreenPointToRay(Input.mousePosition);
+            
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
             {
                 _selectGameObject = _hit.transform.parent.gameObject;

@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Disk : MonoBehaviour
+public sealed class Disk : ReferenceSystem
 {
-    //private Transform[] relatedObjects = new Transform[6];
     public Transform[] RelatedObjects { get; set; } = new Transform[6];
+    public float Height { get; } = 0.5f;
+
     private float _angelSpeed;
-    public float AngelSpeed {
+    private float _radius;
+    private float _speedOnRim;
+    //private Transform[] relatedObjects = new Transform[6];
+    public float AngelSpeed 
+    {
         get => _angelSpeed;
         set
         {
@@ -29,8 +34,6 @@ public class Disk : MonoBehaviour
                 _radius = value; 
         }
     }
-    [SerializeField] private float _radius;
-    private float _speedOnRim;
     public float SpeedOnRim
     {
         get => _speedOnRim;
@@ -73,7 +76,6 @@ public class Disk : MonoBehaviour
             }
         }
     }
-    public float Height { get; } = 0.5f;
     private void FixedUpdate()
     {
         Rot();
@@ -91,4 +93,13 @@ public class Disk : MonoBehaviour
         _yTop,
         _yBot
     }
+    private protected override void Move()
+    {
+        //base.Move();
+    }
+    //public Disk( float height, float radius)
+    //{
+    //    Height = height;
+    //    Radius = radius;
+    //}
 }

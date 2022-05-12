@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ring : MonoBehaviour
+public sealed partial class Ring : ReferenceSystem
 {
-    //private Transform[] _relatedObjects = new Transform[8];
     public Transform[] RelatedObjects { get; set; } = new Transform[8];
+    public float Height { get; } = 1.1f;
+
+    private float _radius;
+    private float _speedOnRim;
+    private float _angelSpeed;
     public float Radius
     {
         get => _radius;
@@ -15,9 +19,6 @@ public class Ring : MonoBehaviour
                 _radius = value;
         }
     }
-    [SerializeField] private float _radius;
-    //private float _F = 0f;
-    private float _speedOnRim;
     public float SpeedOnRim
     {
         get => _speedOnRim;
@@ -32,7 +33,6 @@ public class Ring : MonoBehaviour
             }
         }
     }
-    private float _angelSpeed;
     public float AngelSpeed
     { 
         get => _angelSpeed;
@@ -77,10 +77,11 @@ public class Ring : MonoBehaviour
             }
         }
     }
-    public float Height { get; } = 1.1f;
     private void FixedUpdate()
     {
         Rot();
+        Move();
+        //Play();
     }
     private void Rot()
     {
@@ -96,5 +97,20 @@ public class Ring : MonoBehaviour
         _xLeftIn,
         _zRighrIn,
         _zLeftIn,
+    }
+    public Ring(float radius)
+    {
+        _radius = radius;
+    }
+    //protected override void Move()
+    //{
+    //    //base.Move();  
+    //}
+}
+public sealed partial class Ring
+{
+    private protected override void Move()
+    {
+        //base.Move();  
     }
 }

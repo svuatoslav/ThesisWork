@@ -14,6 +14,7 @@ public class Creator : MonoBehaviour
     private const float _bLittle = 0.1f;
     private float _aBig = 0f;
     private float _bBig = 0f;
+    private const float _around = 360f;
 
     private List<Vector3> _vertex;
     private float _summAngle = 0f;
@@ -31,6 +32,7 @@ public class Creator : MonoBehaviour
 
     public GameObject GetData(float radius, GameObject gameObject, bool FirstObject)
     {
+        //_ = new Disk(0.5f, 1f);
         _ellipsGO = new GameObject();
         _ellipsGO.AddComponent<MeshFilter>().mesh = _ellips;
         _ellipsGO.AddComponent<MeshRenderer>().material = _material;
@@ -74,37 +76,37 @@ public class Creator : MonoBehaviour
         _x_t xt = X_t;
         _z_t zt = Z_t;
         // Для нижнего основания
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), 0f, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), 0f, zt(_bLittle, _summAngle)));
         }
         // Для верхнего основания
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
         }
         // Для боковых сторон от 40
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), 0f, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), 0f, zt(_bLittle, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
         }
@@ -202,45 +204,45 @@ public class Creator : MonoBehaviour
         _x_t xt = X_t;
         _z_t zt = Z_t;
         // Для нижнего основания
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), 0f, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), 0f, zt(_bLittle, _summAngle)));
         }
         // Для верхнего основания шайбы
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
         }
         // Для боковых сторон
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), 0f, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightRingWithBotton, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), 0f, zt(_bLittle, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
         }
-        for (_summAngle = 0f; _summAngle < 360f; _summAngle += 360f / _numbDivisions)
+        for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
         {
             _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightRingWithBotton, zt(_bBig, _summAngle)));
         }
