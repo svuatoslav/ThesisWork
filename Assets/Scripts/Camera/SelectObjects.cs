@@ -175,7 +175,9 @@ public class SelectObjects : MonoBehaviour
         for (int i = 0; i < _relatedObjects.Length * 1000; i++)
         {
             if (_relatedObjects[i % _relatedObjects.Length] == null)
-                NewObject.transform.position = LocationNewFacility( i, _radiusSelectObject);
+                NewObject.transform.position = LocationNewFacility(i, _radiusSelectObject);
+            else
+                continue;
             yield return new WaitForSeconds(1);
         }
         //for (int i = 0; i < (int)RelativePositionDisk._yBot; i++)

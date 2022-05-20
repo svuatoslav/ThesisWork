@@ -2019,7 +2019,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelGreateObject: {fileID: 906192813}
   _panelGame: {fileID: 1270218709}
-  _camera: {fileID: 1922910052}
   _objectType: {fileID: 48413861}
   _inputRadius: {fileID: 1703835286}
   _errorInput: {fileID: 1838749657}
@@ -2665,7 +2664,7 @@ Canvas:
   m_GameObject: {fileID: 1173698134}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1922910052}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -4889,6 +4888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _select: {fileID: 2100000, guid: fa9c60e09173a634b825aa12a59a360f, type: 2}
   _old: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  _camera: {fileID: 0}
 --- !u!114 &1922910055
 MonoBehaviour:
   m_ObjectHideFlags: 0

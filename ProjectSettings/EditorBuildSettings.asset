@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 7d8f8be4e969ad045a2554639904083d
   - enabled: 1
-    path: Assets/Scenes/Company.unity
+    path: Assets/Scenes/Company/Company.unity
     guid: 4f73abef12bae5a409f7a22ae15f81e8
   - enabled: 1
     path: Assets/Scenes/Training.unity
