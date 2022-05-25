@@ -8,7 +8,7 @@ public class Ellips : MonoBehaviour
 {
     //[SerializeField] private Material _material = null;
     private const float _funHeight = 0.7f;
-    private const int _numbDivisions = 20; //количество разделений
+    private const int _numbDivisions = 30; //количество разделений
     private const float _a = 0.1f;
     private const float _b = 0.1f;
     
@@ -103,7 +103,7 @@ public class Ellips : MonoBehaviour
         _mesh.triangles = _triangles;
         _mesh.RecalculateNormals();
         //GetComponent<MeshCollider>().sharedMesh = _mesh;
-        AssetDatabase.CreateAsset(_mesh, "Assets/Meshs/Ellips.asset");
+        //AssetDatabase.CreateAsset(_mesh, "Assets/Meshs/Ellips.asset");
     }
 
     private float X_t(float a, float t) => a * Mathf.Cos(t * Mathf.Deg2Rad);
