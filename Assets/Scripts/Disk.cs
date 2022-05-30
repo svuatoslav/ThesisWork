@@ -19,7 +19,6 @@ public sealed class Disk : ReferenceSystem
     private float _angelSpeed;
     private float _radius;
     private float _speedOnRim;
-    //private Transform[] relatedObjects = new Transform[6];
     public float AngelSpeed 
     {
         get => _angelSpeed;
