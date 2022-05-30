@@ -2,9 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed partial class Ring : ReferenceSystem
+public sealed class Ring : ReferenceSystem
 {
-    public Transform[] RelatedObjects { get; set; } = new Transform[8];
+    public Transform[] RelatedObjects
+    {
+        get => _relatedObjects;
+        set => _relatedObjects = value;
+    }
+    private Transform[] _relatedObjects;
+    private void Start()
+    {
+        _relatedObjects = new Transform[8];
+    }
     public float Height { get; } = 1.1f;
 
     private float _radius;
@@ -102,13 +111,10 @@ public sealed partial class Ring : ReferenceSystem
     {
         _radius = radius;
     }
-    //protected override void Move()
-    //{
-    //    //base.Move();  
-    //}
-}
-public sealed partial class Ring
-{
+    private protected override void Rotation()
+    {
+        //base.Rotation();  
+    }
     private protected override void Move()
     {
         //base.Move();  

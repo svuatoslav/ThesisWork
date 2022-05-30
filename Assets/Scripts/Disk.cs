@@ -4,7 +4,16 @@ using UnityEngine;
 
 public sealed class Disk : ReferenceSystem
 {
-    public Transform[] RelatedObjects { get; set; } = new Transform[6];
+    public Transform[] RelatedObjects
+    {
+        get => _relatedObjects;
+        set => _relatedObjects = value;
+    }
+    private Transform[] _relatedObjects;
+    private void Start()
+    {
+        _relatedObjects = new Transform[6];
+    }
     public float Height { get; } = 0.5f;
 
     private float _angelSpeed;
@@ -96,6 +105,10 @@ public sealed class Disk : ReferenceSystem
     private protected override void Move()
     {
         //base.Move();
+    }
+    private protected override void Rotation()
+    {
+        //base.Rotation();  
     }
     //public Disk( float height, float radius)
     //{

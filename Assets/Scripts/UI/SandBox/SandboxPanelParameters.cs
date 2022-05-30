@@ -8,12 +8,22 @@ public class SandboxPanelParameters : MonoBehaviour
     [SerializeField] private GameObject _panelParameters = null;
     [SerializeField] private GameObject _panelGame = null;
     [SerializeField] private GameObject _inputRotationSpeed = null;
+    [SerializeField] private GameObject _inputAngularAcceleration = null;
     public void SaveParameters()
     {
-        float number = Check(_inputRotationSpeed.GetComponent<InputField>().text);
-        Camera.main.GetComponent<SelectObjects>().AngelSpeed = number;
-        _panelParameters.SetActive(false);
-        _panelGame.SetActive(true);
+        float speed = Check(_inputRotationSpeed.GetComponent<InputField>().text);
+        float overclocking = Check(_inputAngularAcceleration.GetComponent<InputField>().text);
+        if (speed >= 0 && overclocking >= 0)
+        {
+            Camera.main.GetComponent<SelectObjects>().AngelSpeed = speed;
+            _panelParameters.SetActive(false);
+            _panelGame.SetActive(true);
+            //panel
+        }
+        else
+        {
+            //panel
+        }
     }
     private float Check(string text)
     {
@@ -22,6 +32,6 @@ public class SandboxPanelParameters : MonoBehaviour
             return number;
         }
         else
-            return 0;
+            return -1;
     }
 }

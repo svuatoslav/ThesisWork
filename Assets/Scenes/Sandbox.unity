@@ -4751,6 +4751,7 @@ MonoBehaviour:
   _panelParameters: {fileID: 1740713806}
   _panelGame: {fileID: 1270218709}
   _inputRotationSpeed: {fileID: 977663728}
+  _inputAngularAcceleration: {fileID: 0}
 --- !u!1 &1764670205
 GameObject:
   m_ObjectHideFlags: 0
@@ -5520,7 +5521,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _select: {fileID: 2100000, guid: fa9c60e09173a634b825aa12a59a360f, type: 2}
   _old: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
-  _camera: {fileID: 0}
 --- !u!114 &1922910055
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ public class SelectObjects : MonoBehaviour
     private GameObject _selectGameObject;
     private RaycastHit _hit;
     public GameObject NewObject { private get; set; } = null;
-    [SerializeField] private Camera _camera = null;
     public float RadiusNewObject { private get; set; } = 0f;
     public float AngelSpeed { private get; set; } = 0f;
     private float _radiusSelectObject = 0f;
@@ -47,7 +46,7 @@ public class SelectObjects : MonoBehaviour
         }
         else if(Input.GetMouseButtonDown(1))
         {
-            _ray = _camera.ScreenPointToRay(Input.mousePosition);
+            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
             if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
             {
@@ -68,10 +67,17 @@ public class SelectObjects : MonoBehaviour
                 _relatedObjects = NewObject.GetComponent<Disk>().RelatedObjects;
             else if (NewObject.transform.CompareTag("Ring"))
                 _relatedObjects = NewObject.GetComponent<Ring>().RelatedObjects;
+            Debug.Log(NewObject.tag);
+            Debug.LogWarning(_relatedObjects);
+            Debug.LogError(NewObject.GetComponent<Ring>().gameObject);
+            Debug.Log(NewObject.GetComponent<Ring>().RelatedObjects);
+            Debug.Log(_relatedObjects[_Id - 1]);
+            Debug.Log(_relatedObjects[_Id + 1]);
             if (_Id % 2 == 1)
                 _relatedObjects[_Id - 1] = _selectGameObject.transform;
             else
-                _relatedObjects[_Id + 1] = _selectGameObject.transform;
+                _relatedObjects[_Id + 1] = _selectGameObject.transform;//error 
+            //NullReferenceException: Object reference not set to an instance of an object
         }
         else if (_selectGameObject.transform.CompareTag("Ring"))
         {
@@ -101,7 +107,7 @@ public class SelectObjects : MonoBehaviour
         }
         else if (_selectGameObject.transform.CompareTag("Ring"))
         {
-            _ring = _selectGameObject.GetComponent<Ring>();
+            _ring = _selectGameObject.transform.GetComponent<Ring>();
             _radiusSelectObject = _ring.Radius;
             _heightSelectObject = _ring.Height;
             _relatedObjects = _ring.RelatedObjects;
@@ -172,6 +178,7 @@ public class SelectObjects : MonoBehaviour
     }
     private IEnumerator Choice()
     {
+        Debug.Log(_relatedObjects);
         for (int i = 0; i < _relatedObjects.Length * 1000; i++)
         {
             if (_relatedObjects[i % _relatedObjects.Length] == null)
