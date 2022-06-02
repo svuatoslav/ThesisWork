@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelTime : MonoBehaviour
+namespace K2
 {
-    private void Start()
+    public class PanelTime : MonoBehaviour
     {
-        Debug.Log(Time.realtimeSinceStartup);
-        Debug.Log(Time.timeSinceLevelLoad);
-    }
+        private void Start()
+        {
+            Debug.Log(Time.realtimeSinceStartup);
+            Debug.Log(Time.timeSinceLevelLoad);
+        }
 
+    }
 }

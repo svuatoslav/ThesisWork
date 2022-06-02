@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SandboxPanelParameters : MonoBehaviour
+namespace K2
 {
-    [SerializeField] private GameObject _panelParameters = null;
-    [SerializeField] private GameObject _panelGame = null;
-    [SerializeField] private GameObject _inputRotationSpeed = null;
-    [SerializeField] private GameObject _inputAngularAcceleration = null;
-    public void SaveParameters()
+    public class SandboxPanelParameters : MonoBehaviour
     {
-        float speed = Check(_inputRotationSpeed.GetComponent<InputField>().text);
-        float overclocking = Check(_inputAngularAcceleration.GetComponent<InputField>().text);
-        if (speed >= 0 && overclocking >= 0)
+        [SerializeField] private GameObject _panelParameters = null;
+        [SerializeField] private GameObject _panelGame = null;
+        [SerializeField] private GameObject _inputRotationSpeed = null;
+        [SerializeField] private GameObject _inputAngularAcceleration = null;
+        public void SaveParameters()
         {
-            Camera.main.GetComponent<SelectObjects>().AngelSpeed = speed;
-            _panelParameters.SetActive(false);
-            _panelGame.SetActive(true);
-            //panel
+            float speed = Check(_inputRotationSpeed.GetComponent<InputField>().text);
+            float overclocking = Check(_inputAngularAcceleration.GetComponent<InputField>().text);
+            if (speed >= 0 && overclocking >= 0)
+            {
+                Camera.main.GetComponent<SelectObjects>().AngelSpeed = speed;
+                _panelParameters.SetActive(false);
+                _panelGame.SetActive(true);
+                //panel
+            }
+            else
+            {
+                //panel
+            }
         }
-        else
+        private float Check(string text)
         {
-            //panel
+            if (float.TryParse(text, out float number) == true)
+            {
+                return number;
+            }
+            else
+                return -1;
         }
-    }
-    private float Check(string text)
-    {
-        if (float.TryParse(text, out float number) == true)
-        {
-            return number;
-        }
-        else
-            return -1;
     }
 }

@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PanelMenu : MonoBehaviour
+namespace K2
 {
-    [SerializeField] private GameObject _menu = null;
-    private void Update()
+    public class PanelMenu : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        [SerializeField] private GameObject _menu = null;
+        private void Update()
         {
-            if (_menu.activeSelf)
-                _menu.SetActive(false);
-            else
-                _menu.SetActive(true);
-        }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (_menu.activeSelf)
+                    _menu.SetActive(false);
+                else
+                    _menu.SetActive(true);
+            }
 
-    }
-    public void QuitSandbox()
-    {
-        // clear meshs
-        SceneManager.LoadScene(0);
+        }
+        public void QuitSandbox()
+        {
+            // clear meshs
+            SceneManager.LoadScene(0);
+        }
     }
 }

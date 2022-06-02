@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointInformation : MonoBehaviour
+namespace K2
 {
-    private bool _informationActive = false;
-    public void CreateInformation()
+    public class PointInformation : MonoBehaviour
     {
-        if(_informationActive)
+        private bool _informationActive = false;
+        public void CreateInformation()
         {
-            _informationActive = false;
-            //Destroy(); окошко
-        }
-        else
-        {
-            _informationActive = true;
-            //Create() окошко
+            if (_informationActive)
+            {
+                _informationActive = false;
+                //Destroy(); окошко
+            }
+            else
+            {
+                _informationActive = true;
+                //Create() окошко
+            }
         }
     }
 }
