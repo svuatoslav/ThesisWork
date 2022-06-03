@@ -9,6 +9,9 @@ TagManager:
   - Ellips
   - Ring
   - RingWithBottom
+  - Cargo
+  - Cylinder
+  - Tape
   layers:
   - Default
   - TransparentFX

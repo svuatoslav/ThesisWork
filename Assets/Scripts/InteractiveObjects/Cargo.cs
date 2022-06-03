@@ -6,6 +6,12 @@ namespace K2
 {
     public class Cargo : ReferenceSystem
     {
+        private float _acceleration;
+        private float _speed;
+        private float _const2;
+        private float _const1;
+        private float _const0;
+        private float _x;
         public Transform[] RelatedObjects
         {
             get => _relatedObjects;

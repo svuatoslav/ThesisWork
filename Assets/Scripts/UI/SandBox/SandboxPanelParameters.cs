@@ -14,8 +14,8 @@ namespace K2
         public void SaveParameters()
         {
             float speed = Check(_inputRotationSpeed.GetComponent<InputField>().text);
-            float overclocking = Check(_inputAngularAcceleration.GetComponent<InputField>().text);
-            if (speed >= 0 && overclocking >= 0)
+            float acceleration = Check(_inputAngularAcceleration.GetComponent<InputField>().text);
+            if (speed >= 0 && acceleration >= 0)
             {
                 Camera.main.GetComponent<SelectObjects>().AngelSpeed = speed;
                 _panelParameters.SetActive(false);

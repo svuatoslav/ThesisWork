@@ -21,6 +21,8 @@ namespace K2
         private float _angelSpeed;
         private float _radius;
         private float _speedOnRim;
+        private float _acceleration;
+        private float _accelerationOnRim;
         public float AngelSpeed
         {
             get => _angelSpeed;
@@ -32,6 +34,20 @@ namespace K2
                     _speedOnRim = _angelSpeed * _radius;
                     Debug.LogWarning(gameObject.name);
                     SetMovementScheme();
+                }
+            }
+        }
+        public float Acceleration
+        {
+            get => _acceleration;
+            set
+            {
+                if (_acceleration != value)
+                {
+                    _acceleration = value;
+                    _accelerationOnRim = _acceleration * _radius;
+                    Debug.LogWarning(gameObject.name);
+                    //SetMovementScheme();
                 }
             }
         }
@@ -93,6 +109,7 @@ namespace K2
         private void Rot()
         {
             transform.Rotate(AngelSpeed * Time.fixedDeltaTime * Vector3.up);
+            AngelSpeed += _acceleration * Time.fixedDeltaTime;
         }
         private enum RelativePositionDisk
         {

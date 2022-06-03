@@ -6,6 +6,8 @@ namespace K2
 {
     public class Tape : ReferenceSystem
     {
+        private float _acceleration;
+        private float _speed;
         public Transform[] RelatedObjects
         {
             get => _relatedObjects;

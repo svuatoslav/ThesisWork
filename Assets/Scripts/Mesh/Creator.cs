@@ -8,7 +8,9 @@ namespace K2
     {
         [SerializeField] private Mesh _ellips = null;
         [SerializeField] private Material _material = null;
+        [SerializeField] private GameObject _tape = null;
         private const float _funHeightWasher = 0.5f;
+        private const float _funHeightCylinder = 5f;
         private const float _funHeightRingWithBotton = 1.1f;
         private const int _numbDivisions = 50;
         // Количество разделений
@@ -32,43 +34,88 @@ namespace K2
         private delegate float _x_t(float a, float phi);
         private delegate float _z_t(float b, float phi);
 
-        public GameObject GetData(float radius, GameObject gameObject, bool FirstObject)
+        public GameObject GetData(float number, GameObject gameObject, bool FirstObject)
         {
-            //_ = new Disk(0.5f, 1f);
-            _ellipsGO = new GameObject();
-            _ellipsGO.AddComponent<MeshFilter>().mesh = _ellips;
-            _ellipsGO.AddComponent<MeshRenderer>().material = _material;
-            _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
-            _aBig = radius;
-            _bBig = _aBig;
-            if (gameObject.CompareTag("Disk"))
+            if (_parent.CompareTag("Cargo"))
             {
-                _parent.GetComponent<Disk>().Radius = radius;
-                // Сделать родителя для наследников для кольца
+                _parent = new GameObject();
+                var cargo = Instantiate(gameObject, new Vector3(0f, 0f, -number), Quaternion.identity);
+                cargo.transform.parent = _parent.transform;
+                for (int i = 0; i <= number / _tape.transform.localScale.z; i++)
+                {
+                    var tape = Instantiate(_tape, new Vector3(0f, 0f, (_tape.transform.localScale.z * i) - _tape.transform.localScale.z / 2), Quaternion.identity);
+                    tape.transform.parent = _parent.transform;
+                }
+            }
+            else if (_parent.CompareTag("Cylinder"))//add a dependency on the radius of the object
+            {
+                _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
+                _aBig = number;
+                _bBig = _aBig;
+                //_parent.GetComponent<MyCylinder>().Radius = number;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 _washer = new GameObject();
-                _washer = GenerateWasher(_washer);
+                GenerateWasher(_washer, _funHeightCylinder);
                 _washer.transform.parent = _parent.transform;
-                // Сначала создать
-                _washer.name = "Washer";
-                _washer.tag = "Washer";
+                GenerateEllips(true);
             }
-            else if (gameObject.CompareTag("Ring"))
-            {
-                _parent.GetComponent<Ring>().Radius = radius;
-                _ringWithBottom = new GameObject();
-                _ringWithBottom = GenerateRingWithBottom(_ringWithBottom);
-                _ringWithBottom.transform.parent = _parent.transform;
-                _ringWithBottom.name = "RingWithBottom";
-                _ringWithBottom.tag = "RingWithBottom";
-            }
-            _ellipsGO.transform.parent = _parent.transform;
-            _ellipsGO.name = "Ellips";
-            _ellipsGO.tag = "Ellips";
             if (!FirstObject)
                 _parent.SetActive(false);
             return _parent;
         }
-        private GameObject GenerateWasher(GameObject _washer)
+        public GameObject GetData(float radius, GameObject gameObject, bool connectionType, bool FirstObject)
+        {
+            _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
+            _aBig = radius;
+            _bBig = _aBig;
+            if (_parent.CompareTag("Disk"))
+            {
+                _parent.GetComponent<Disk>().Radius = radius;
+                // Сделать родителя для наследников для кольца
+                _washer = new GameObject();
+                GenerateWasher(_washer, _funHeightWasher);
+                _washer.transform.parent = _parent.transform;
+            }
+            else if (_parent.CompareTag("Ring"))
+            {
+                _parent.GetComponent<Ring>().Radius = radius;
+                _ringWithBottom = new GameObject();
+                GenerateRingWithBottom(_ringWithBottom);
+                _ringWithBottom.transform.parent = _parent.transform;
+                _ringWithBottom.name = "RingWithBottom";
+                _ringWithBottom.tag = "RingWithBottom";
+            }
+            GenerateEllips(false);
+            if (!FirstObject)
+                _parent.SetActive(false);
+            if (connectionType)
+            {
+
+            }
+            return _parent;
+        }
+        private void AddCargo()
+        {
+
+        }
+        public void GenerateType(float lenght, Vector3 position, float angle)
+        {
+
+        }
+        private void GenerateEllips(bool high)
+        {
+            _ellipsGO = new GameObject();
+            _ellipsGO.AddComponent<MeshFilter>().mesh = _ellips;
+            _ellipsGO.AddComponent<MeshRenderer>().material = _material;
+            _ellipsGO.transform.position -= new Vector3(0f, 0f, 0.1f);
+            if (high)
+            {
+                _ellipsGO.transform.localScale += new Vector3(0f, 0f, _ellipsGO.transform.localScale.z) * 10;
+            }
+            _ellipsGO.transform.parent = _parent.transform;
+            _ellipsGO.name = "Ellips";
+            _ellipsGO.tag = "Ellips";
+        }
+        private void GenerateWasher(GameObject _washer, float height)
         {
             _vertex = new List<Vector3>();
             _triangl = new List<int>();
@@ -89,11 +136,11 @@ namespace K2
             // Для верхнего основания
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
             {
-                _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
+                _vertex.Add(new Vector3(xt(_aBig, _summAngle), height, zt(_bBig, _summAngle)));
             }
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
             {
-                _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
+                _vertex.Add(new Vector3(xt(_aLittle, _summAngle), height, zt(_bLittle, _summAngle)));
             }
             // Для боковых сторон от 40
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
@@ -102,7 +149,7 @@ namespace K2
             }
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
             {
-                _vertex.Add(new Vector3(xt(_aBig, _summAngle), _funHeightWasher, zt(_bBig, _summAngle)));
+                _vertex.Add(new Vector3(xt(_aBig, _summAngle), height, zt(_bBig, _summAngle)));
             }
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
             {
@@ -110,7 +157,7 @@ namespace K2
             }
             for (_summAngle = 0f; _summAngle < _around; _summAngle += _around / _numbDivisions)
             {
-                _vertex.Add(new Vector3(xt(_aLittle, _summAngle), _funHeightWasher, zt(_bLittle, _summAngle)));
+                _vertex.Add(new Vector3(xt(_aLittle, _summAngle), height, zt(_bLittle, _summAngle)));
             }
             _vertices = new Vector3[_vertex.Count];
             for (int i = 0; i < _vertex.Count; i++)
@@ -192,11 +239,12 @@ namespace K2
             _mesh.RecalculateNormals();
             _washer.AddComponent<MeshRenderer>().material = _material;
             _washer.AddComponent<MeshCollider>().sharedMesh = _mesh;
+            _washer.name = "Washer";
+            _washer.tag = "Washer";
             // Для сохранения
             //AssetDatabase.CreateAsset(_mesh, "Assets/Meshs/Washer.asset");
-            return _washer;
         }
-        private GameObject GenerateRingWithBottom(GameObject ringWithBottom)
+        private void GenerateRingWithBottom(GameObject ringWithBottom)
         {
             _vertex = new List<Vector3>();
             _triangl = new List<int>();
@@ -345,7 +393,6 @@ namespace K2
             _mesh.RecalculateNormals();
             ringWithBottom.AddComponent<MeshRenderer>().material = _material;
             ringWithBottom.AddComponent<MeshCollider>().sharedMesh = _mesh;
-            return ringWithBottom;
         }
         private float X_t(float a, float t)
         {
