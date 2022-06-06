@@ -6,6 +6,7 @@ namespace K2
 {
     public class Cargo : ReferenceSystem
     {
+        private float _lenght;
         private float _acceleration;
         private float _speed;
         private float _const2;
@@ -22,9 +23,18 @@ namespace K2
         {
             _relatedObjects = new Transform[1];
         }
+        public float Lenght
+        {
+            get => _lenght;
+            set
+            {
+                if (_lenght == 0f)
+                    _lenght = value;
+            }
+        }
         private void FixedUpdate()
         {
-            Move();
+            //Move();
             //transform.Translate()
             //Play();
             //transform.position = NewCoordinates(transform.position.x, transform.position.z, angle);//add time? local coordinates

@@ -8,7 +8,7 @@ namespace K2
     {
         [SerializeField] private Mesh _ellips = null;
         [SerializeField] private Material _material = null;
-        [SerializeField] private GameObject _tape = null;
+        [SerializeField] private GameObject _parttape = null;
         private const float _funHeightWasher = 0.5f;
         private const float _funHeightCylinder = 5f;
         private const float _funHeightRingWithBotton = 1.1f;
@@ -36,18 +36,20 @@ namespace K2
 
         public GameObject GetData(float number, GameObject gameObject, bool FirstObject)
         {
-            if (_parent.CompareTag("Cargo"))
+            if (gameObject.CompareTag("Cargo"))
             {
-                _parent = new GameObject();
-                var cargo = Instantiate(gameObject, new Vector3(0f, 0f, -number), Quaternion.identity);
-                cargo.transform.parent = _parent.transform;
-                for (int i = 0; i <= number / _tape.transform.localScale.z; i++)
+                //_parent = new GameObject();
+                var cargo = Instantiate(gameObject, new Vector3(0f, 0f, number), Quaternion.identity);
+                float newZ = _parttape.transform.localScale.z;
+                for (int i = 0; i < number / newZ; i++)
                 {
-                    var tape = Instantiate(_tape, new Vector3(0f, 0f, (_tape.transform.localScale.z * i) - _tape.transform.localScale.z / 2), Quaternion.identity);
-                    tape.transform.parent = _parent.transform;
+                    var tape = Instantiate(_parttape, new Vector3(0f, 0f, (newZ * i) + newZ / 2), Quaternion.identity);
+                    tape.transform.parent = cargo.transform.GetChild(0);
                 }
+                Debug.Log(cargo.transform.position);
+                _parent = cargo;
             }
-            else if (_parent.CompareTag("Cylinder"))//add a dependency on the radius of the object
+            else if (gameObject.CompareTag("Cylinder"))//add a dependency on the radius of the object
             {
                 _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
                 _aBig = number;
@@ -58,44 +60,32 @@ namespace K2
                 _washer.transform.parent = _parent.transform;
                 GenerateEllips(true);
             }
-            if (!FirstObject)
-                _parent.SetActive(false);
-            return _parent;
-        }
-        public GameObject GetData(float radius, GameObject gameObject, bool connectionType, bool FirstObject)
-        {
-            _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
-            _aBig = radius;
-            _bBig = _aBig;
-            if (_parent.CompareTag("Disk"))
+            else if(gameObject.CompareTag("Disk"))
             {
-                _parent.GetComponent<Disk>().Radius = radius;
+                _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
+                _aBig = number;
+                _bBig = _aBig;
+                _parent.GetComponent<Disk>().Radius = number;
                 // Сделать родителя для наследников для кольца
                 _washer = new GameObject();
                 GenerateWasher(_washer, _funHeightWasher);
                 _washer.transform.parent = _parent.transform;
             }
-            else if (_parent.CompareTag("Ring"))
+            else if (gameObject.CompareTag("Ring"))
             {
-                _parent.GetComponent<Ring>().Radius = radius;
+                _parent = Instantiate(gameObject, Vector3.zero, Quaternion.identity);
+                _aBig = number;
+                _bBig = _aBig;
+                _parent.GetComponent<Ring>().Radius = number;
                 _ringWithBottom = new GameObject();
                 GenerateRingWithBottom(_ringWithBottom);
                 _ringWithBottom.transform.parent = _parent.transform;
                 _ringWithBottom.name = "RingWithBottom";
                 _ringWithBottom.tag = "RingWithBottom";
             }
-            GenerateEllips(false);
             if (!FirstObject)
                 _parent.SetActive(false);
-            if (connectionType)
-            {
-
-            }
             return _parent;
-        }
-        private void AddCargo()
-        {
-
         }
         public void GenerateType(float lenght, Vector3 position, float angle)
         {
@@ -106,7 +96,7 @@ namespace K2
             _ellipsGO = new GameObject();
             _ellipsGO.AddComponent<MeshFilter>().mesh = _ellips;
             _ellipsGO.AddComponent<MeshRenderer>().material = _material;
-            _ellipsGO.transform.position -= new Vector3(0f, 0f, 0.1f);
+            _ellipsGO.transform.position -= new Vector3(0f, 0.1f, 0f);
             if (high)
             {
                 _ellipsGO.transform.localScale += new Vector3(0f, 0f, _ellipsGO.transform.localScale.z) * 10;

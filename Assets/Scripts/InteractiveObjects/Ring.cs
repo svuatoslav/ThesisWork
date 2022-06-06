@@ -15,8 +15,9 @@ namespace K2
         private void Start()
         {
             _relatedObjects = new Transform[8];
+            Height = 1.1f;
         }
-        public float Height { get; } = 1.1f;
+        public float Height { get; private set; }
 
         private float _radius;
         private float _speedOnRim;

@@ -61,28 +61,36 @@ namespace K2
         public void CreateObject()// Исправить порядок проверки и действий
         {
             float number = Check(_inputRadius.GetComponent<InputField>().text);
-            if (number > 0)
+            float number1 = Check(_tapeLength.GetComponent<InputField>().text);
+            if (_connectionType.GetComponent<Dropdown>().value == 0)
+            {
+                Camera.main.GetComponent<SelectObjects>().ConnectionType = true;
+            }
+            else
+                Camera.main.GetComponent<SelectObjects>().ConnectionType = false;
+            if (number > 0 || number1 >= 0)
             {
                 if (_objectType.GetComponent<Dropdown>().value == 0)
                 {
                     _newObject = gameObject.GetComponent<Creator>().GetData(number, _disk, _firstObjects);
-                    ConnectionType(number);
+                    Camera.main.GetComponent<SelectObjects>().RadiusNewObject = number;
                 }
                 else if (_objectType.GetComponent<Dropdown>().value == 1)
                 {
                     _newObject = gameObject.GetComponent<Creator>().GetData(number, _ring, _firstObjects);
-                    ConnectionType(number);
+                    Camera.main.GetComponent<SelectObjects>().RadiusNewObject = number;
                 }
                 else if (_objectType.GetComponent<Dropdown>().value == 2)
                 {
-                    _newObject = gameObject.GetComponent<Creator>().GetData(number, _cargo, _firstObjects);
+                    _newObject = gameObject.GetComponent<Creator>().GetData(number1, _cargo, _firstObjects);
+                    Camera.main.GetComponent<SelectObjects>().RadiusNewObject = number1;
                 }
                 else if (_objectType.GetComponent<Dropdown>().value == 3)
                 {
-                    _newObject = gameObject.GetComponent<Creator>().GetData(number, _cylinder, _firstObjects);
+                    _newObject = gameObject.GetComponent<Creator>().GetData(number1, _cylinder, _firstObjects);
+                    Camera.main.GetComponent<SelectObjects>().RadiusNewObject = number1;
                 }
                 Camera.main.GetComponent<SelectObjects>().NewObject = _newObject;
-                Camera.main.GetComponent<SelectObjects>().RadiusNewObject = number;
                 _firstObjects = false;
                 _panelGreateObject.SetActive(false);
                 _panelGame.SetActive(true);
@@ -92,17 +100,6 @@ namespace K2
             else
             {
                 _errorInput.SetActive(true);
-            }
-        }
-        private void ConnectionType(float number)
-        {
-            if (_connectionType.GetComponent<Dropdown>().value == 0)
-            {
-                _newObject = gameObject.GetComponent<Creator>().GetData(number, _tape, _firstObjects);
-            }
-            else
-            {
-
             }
         }
         private float Check(string text)

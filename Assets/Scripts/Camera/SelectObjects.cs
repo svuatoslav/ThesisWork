@@ -15,6 +15,7 @@ namespace K2
         public GameObject NewObject { private get; set; } = null;
         public float RadiusNewObject { private get; set; } = 0f;
         public float AngelSpeed { private get; set; } = 0f;
+        public bool ConnectionType { get; set; }
         private float _radiusSelectObject = 0f;
         private float _heightSelectObject = 0f;
         private Transform[] _relatedObjects;
@@ -69,17 +70,22 @@ namespace K2
                     _relatedObjects = NewObject.GetComponent<Disk>().RelatedObjects;
                 else if (NewObject.transform.CompareTag("Ring"))
                     _relatedObjects = NewObject.GetComponent<Ring>().RelatedObjects;
-                Debug.Log(NewObject.tag);
-                Debug.LogWarning(_relatedObjects);
-                Debug.LogError(NewObject.GetComponent<Ring>().gameObject);
-                Debug.Log(NewObject.GetComponent<Ring>().RelatedObjects);
-                Debug.Log(_relatedObjects[_Id - 1]);
-                Debug.Log(_relatedObjects[_Id + 1]);
-                if (_Id % 2 == 1)
-                    _relatedObjects[_Id - 1] = _selectGameObject.transform;
-                else
-                    _relatedObjects[_Id + 1] = _selectGameObject.transform;//error 
-                                                                           //NullReferenceException: Object reference not set to an instance of an object
+
+                //Debug.Log(NewObject.tag);
+                //Debug.LogWarning(_relatedObjects);
+                //Debug.LogError(NewObject.GetComponent<Ring>().gameObject);
+                //Debug.Log(NewObject.GetComponent<Ring>().RelatedObjects);
+                //Debug.Log(_relatedObjects[_Id - 1]);
+                //Debug.Log(_relatedObjects[_Id + 1]);
+                 if (!NewObject.transform.CompareTag("Cargo"))
+                 {
+                    if (_Id % 2 == 1)
+                        _relatedObjects[_Id - 1] = _selectGameObject.transform;
+                    else
+                        _relatedObjects[_Id + 1] = _selectGameObject.transform;//error 
+                                                                               //NullReferenceException: Object reference not set to an instance of an object
+                 }
+
             }
             else if (_selectGameObject.transform.CompareTag("Ring"))
             {
@@ -87,16 +93,23 @@ namespace K2
                     _relatedObjects = NewObject.GetComponent<Disk>().RelatedObjects;
                 else if (NewObject.transform.CompareTag("Ring"))
                     _relatedObjects = NewObject.GetComponent<Ring>().RelatedObjects;
-                if (_Id <= 3)// magic
+                if (!NewObject.transform.CompareTag("Cargo"))
                 {
-                    if (_Id % 2 == 1)
-                        _relatedObjects[_Id - 1] = _selectGameObject.transform;
+                    if (_Id <= 3)// magic
+                    {
+                        if (_Id % 2 == 1)
+                            _relatedObjects[_Id - 1] = _selectGameObject.transform;
+                        else
+                            _relatedObjects[_Id + 1] = _selectGameObject.transform;
+                    }
                     else
-                        _relatedObjects[_Id + 1] = _selectGameObject.transform;
+                        _relatedObjects[_Id % 4] = _selectGameObject.transform;
                 }
-                else
-                    _relatedObjects[_Id % 4] = _selectGameObject.transform;
             }
+        }
+        private void CommunicationCargo()
+        {
+
         }
         private void GameObjectSelected()
         {
@@ -121,70 +134,98 @@ namespace K2
         }
         private void Activation()
         {
-            if (NewObject.activeSelf)
+            if (NewObject.activeSelf)// для повторения
             {
-                NewObject = Instantiate(NewObject, new Vector3(_radiusSelectObject + RadiusNewObject, 0f, 0f), Quaternion.identity);
-                if (NewObject.transform.CompareTag("Disk"))
-                    NewObject.GetComponent<Disk>().Radius = RadiusNewObject;
-                else if (NewObject.transform.CompareTag("Ring"))
-                    NewObject.GetComponent<Ring>().Radius = RadiusNewObject;
+                if(NewObject.transform.CompareTag("Cargo"))
+                {
+                    NewObject = Instantiate(NewObject, new Vector3(_radiusSelectObject, 0f, NewObject.transform.position.z), Quaternion.identity);
+                    NewObject.GetComponent<Cargo>().Lenght = RadiusNewObject;
+                }
+                else
+                {
+                    NewObject = Instantiate(NewObject, new Vector3(_radiusSelectObject + RadiusNewObject, 0f, 0f), Quaternion.identity);
+                    if (NewObject.transform.CompareTag("Disk"))
+                        NewObject.GetComponent<Disk>().Radius = RadiusNewObject;
+                    else if (NewObject.transform.CompareTag("Ring"))
+                        NewObject.GetComponent<Ring>().Radius = RadiusNewObject;
+                }
             }
             else
                 NewObject.SetActive(true);
         }
-        private Vector3 LocationNewFacility(int i, float radiusobject1)// через enum попробовать написать для безопасности и связать с объектом
+        private Vector3 LocationNewFacility(int i, float numberSelect, Vector3 old)// через enum попробовать написать для безопасности и связать с объектом
         {
+            Debug.Log(numberSelect);
+            Debug.Log(RadiusNewObject);
+            Debug.Log(NewObject.tag);
             if (_selectGameObject.transform.CompareTag("Disk"))
             {
                 if (NewObject.transform.CompareTag("Disk"))
                 {
-                    Vector3[] iPosition = { new Vector3(radiusobject1 + RadiusNewObject, 0f, 0f), new Vector3(-(radiusobject1 + RadiusNewObject), 0f, 0f),
-                    new Vector3(0f, 0f, radiusobject1 + RadiusNewObject), new Vector3(0f, 0f, -(radiusobject1 + RadiusNewObject)),
+                    Vector3[] iPosition = { new Vector3(numberSelect + RadiusNewObject, 0f, 0f), new Vector3(-(numberSelect + RadiusNewObject), 0f, 0f),
+                    new Vector3(0f, 0f, numberSelect + RadiusNewObject), new Vector3(0f, 0f, -(numberSelect + RadiusNewObject)),
                     new Vector3(0f, -_heightSelectObject, 0f), new Vector3(0f, _heightSelectObject, 0f) };
                     _Id = i % iPosition.Length;
                     return _selectGameObject.transform.position + iPosition[i % iPosition.Length];
                 }
                 else if (NewObject.transform.CompareTag("Ring"))
                 {
-                    Vector3[] iPosition = { new Vector3(radiusobject1 + RadiusNewObject, 0f, 0f), new Vector3(-(radiusobject1 + RadiusNewObject), 0f, 0f),
-                    new Vector3(0f, 0f, radiusobject1 + RadiusNewObject), new Vector3(0f, 0f, -(radiusobject1 + RadiusNewObject)),
+                    Vector3[] iPosition = { new Vector3(numberSelect + RadiusNewObject, 0f, 0f), new Vector3(-(numberSelect + RadiusNewObject), 0f, 0f),
+                    new Vector3(0f, 0f, numberSelect + RadiusNewObject), new Vector3(0f, 0f, -(numberSelect + RadiusNewObject)),
                     new Vector3(0f, -_heightSelectObject, 0f), new Vector3(0f, _heightSelectObject, 0f) };
                     _Id = i % iPosition.Length;
                     return _selectGameObject.transform.position + iPosition[i % iPosition.Length];
+                }
+                else if (NewObject.transform.CompareTag("Cargo"))// добавить наклонение
+                {
+                    Vector3[] iPosition = {
+                        new Vector3(numberSelect, _heightSelectObject / 2, 0f),
+                        new Vector3(-(numberSelect), _heightSelectObject/2, 0f)};
+                    _Id = i % iPosition.Length;
+                    return _selectGameObject.transform.position + iPosition[i % iPosition.Length] + old;
                 }
             }
             else if (_selectGameObject.transform.CompareTag("Ring"))
             {
                 if (NewObject.transform.CompareTag("Disk"))
                 {
-                    Vector3[] iPosition = { new Vector3(radiusobject1 + RadiusNewObject, 0f, 0f),
-                    new Vector3(-(radiusobject1 + RadiusNewObject), 0f, 0f),
-                    new Vector3(0f, 0f, radiusobject1 + RadiusNewObject),
-                    new Vector3(0f, 0f, -(radiusobject1 + RadiusNewObject)),
-                    new Vector3(radiusobject1 - RadiusNewObject, _heightSelectObject / 2, 0f),
-                    new Vector3(-(radiusobject1 - RadiusNewObject), _heightSelectObject / 2, 0f),
-                    new Vector3(0f, _heightSelectObject / 2, (radiusobject1 - RadiusNewObject)),
-                    new Vector3(0f, _heightSelectObject / 2, -(radiusobject1 - RadiusNewObject)) };
+                    Vector3[] iPosition = { new Vector3(numberSelect + RadiusNewObject, 0f, 0f),
+                        new Vector3(-(numberSelect + RadiusNewObject), 0f, 0f),
+                        new Vector3(0f, 0f, numberSelect + RadiusNewObject),
+                        new Vector3(0f, 0f, -(numberSelect + RadiusNewObject)),
+                        new Vector3(numberSelect - RadiusNewObject, _heightSelectObject / 2, 0f),
+                        new Vector3(0f, _heightSelectObject / 2, (numberSelect - RadiusNewObject)),
+                        new Vector3(0f, _heightSelectObject / 2, -(numberSelect - RadiusNewObject)) };
                     _Id = i % iPosition.Length;
                     return _selectGameObject.transform.position + iPosition[i % iPosition.Length];
                 }
                 else if (NewObject.transform.CompareTag("Ring"))
                 {
-                    Vector3[] iPosition = { new Vector3(radiusobject1 + RadiusNewObject, 0f, 0f), new Vector3(-(radiusobject1 + RadiusNewObject), 0f, 0f),
-                    new Vector3(0f, 0f, radiusobject1 + RadiusNewObject), new Vector3(0f, 0f, -(radiusobject1 + RadiusNewObject)) };
+                    Vector3[] iPosition = { new Vector3(numberSelect + RadiusNewObject, 0f, 0f), new Vector3(-(numberSelect + RadiusNewObject), 0f, 0f),
+                    new Vector3(0f, 0f, numberSelect + RadiusNewObject), new Vector3(0f, 0f, -(numberSelect + RadiusNewObject)) };
                     _Id = i % iPosition.Length;
                     return _selectGameObject.transform.position + iPosition[i % iPosition.Length];
+                }
+                else if (NewObject.transform.CompareTag("Cargo"))
+                {
+                    Vector3[] iPosition = {
+                        new Vector3(numberSelect, _heightSelectObject / 2, 0f),
+                        new Vector3(-numberSelect, _heightSelectObject/2, 0f)};
+                    _Id = i % iPosition.Length;
+                    return _selectGameObject.transform.position + iPosition[i % iPosition.Length] + old;
                 }
             }
             return Vector3.zero;
         }
         private IEnumerator Choice()
         {
-            Debug.Log(_relatedObjects);
+            var oldPosition = NewObject.transform.position;
+            Debug.Log(_heightSelectObject);
+            //Debug.Log(_relatedObjects);
             for (int i = 0; i < _relatedObjects.Length * 1000; i++)
             {
                 if (_relatedObjects[i % _relatedObjects.Length] == null)
-                    NewObject.transform.position = LocationNewFacility(i, _radiusSelectObject);
+                    NewObject.transform.position = LocationNewFacility(i, _radiusSelectObject, oldPosition);
                 else
                     continue;
                 yield return new WaitForSeconds(1);
